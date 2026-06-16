@@ -1,0 +1,1 @@
+curl -s "https://namoz-vaqti.uz/?format=json&lang=lotin&period=today&region=kosonsoy"
