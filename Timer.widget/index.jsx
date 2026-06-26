@@ -19,7 +19,7 @@ const TOTAL_SECONDS = POMODORO_MINUTES * 60;
 let state = {
   running: false,
   startTime: null,
-  remaining: 4 * 60 + 37,
+  remaining: TOTAL_SECONDS,
   interval: null,
 };
 
