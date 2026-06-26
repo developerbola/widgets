@@ -5,12 +5,12 @@ export const refreshFrequency = 1000;
 
 export const windowHeight = 80;
 export const windowWidth = 160;
-export const windowLeft = 200;
+export const windowLeft = 700;
 export const windowTop = 145;
 
 const width = 140;
 const height = 60;
-const r = 3;
+const r = 6;
 const stroke = 3;
 
 const POMODORO_MINUTES = 25;
@@ -18,8 +18,8 @@ const TOTAL_SECONDS = POMODORO_MINUTES * 60;
 
 let state = {
   running: false,
-  startTime: null, // timestamp
-  remaining: TOTAL_SECONDS,
+  startTime: null,
+  remaining: 4 * 60 + 37,
   interval: null,
 };
 
@@ -125,7 +125,7 @@ export const className = `
   align-items: center;
   font-family: JetBrains Mono;
   color: white;
-  border-radius: 16px;
+  border-radius: ${r + 5}px;
 }
 
 .timer {
