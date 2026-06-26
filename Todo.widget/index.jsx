@@ -105,7 +105,6 @@ export default function TodoWidget() {
 
   const handleItemKeyDown = (e, id) => {
     const currentIndex = tasks.findIndex((t) => t.id === id);
-    console.log(e);
 
     if (e.key === "ArrowLeft") {
       e.preventDefault();
@@ -133,8 +132,6 @@ export default function TodoWidget() {
   };
 
   const handleKeyDown = (e) => {
-    console.log(e.key);
-
     if (e.key === "Enter") addTask();
     if (e.key === "Escape") closeDialog();
   };
@@ -371,10 +368,6 @@ export const className = `
     background: #ffffff0b;
   }
 
-  .todo-item:focus {
-    background: #9cc1ff20;
-  }
-
   .todo-checkbox {
     flex-shrink: 0;
     width: 18px;
@@ -451,11 +444,10 @@ export const className = `
 
   .todo-dialog {
     width: 100%;
-    background: #1c1c1ef0;
-    border: 1px solid #ffffff1a;
-    border-radius: 12px;
+    background: #111;
+    backdrop-filter: blur(20px);
+    border-radius: 8px;
     padding: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
     animation: todo-pop-in 0.15s ease;
   }
 
@@ -500,7 +492,6 @@ export const className = `
   .todo-input {
     flex: 1;
     background: #ffffff0d;
-    border: 1px solid #ffffff1f;
     outline: none;
     color: #f2f2f4;
     font-size: 13px;
@@ -508,10 +499,6 @@ export const className = `
     padding: 9px 10px;
     border-radius: 8px;
     transition: border-color 0.15s ease;
-  }
-
-  .todo-input:focus {
-    border-color: #9cc1ff66;
   }
 
   .todo-input::placeholder {
