@@ -10,41 +10,65 @@ export const command = "./taqvim.sh";
 const ORDER = ["bomdod", "quyosh", "peshin", "asr", "shom", "xufton"];
 
 export default function Taqvim({ output }) {
-  if (!output) return null;
+  let data = null;
 
-  let data;
-  try {
-    data = JSON.parse(output);
-  } catch {
-    return null;
+  if (output) {
+    try {
+      data = JSON.parse(output);
+    } catch {
+      data = null;
+    }
   }
 
-  const { times } = data.today;
-  const labels = data.labels;
-  const meta = data.meta;
-  const current = activeKey(times, meta?.now);
+  const loading = !data;
+
+  const times = data?.today?.times || {};
+  const labels = data?.labels || {};
+  const meta = data?.meta;
+  const current = loading ? null : activeKey(times, meta?.now);
 
   return (
     <div style={screen}>
+      <style>{skeletonCSS}</style>
       <div style={widget}>
         <div style={topRow}>
-          <span>{meta?.region?.name}</span>
+          <span>
+            {loading ? (
+              <Skeleton width={80} height={11} />
+            ) : (
+              meta?.region?.name
+            )}
+          </span>
           <span style={{ textTransform: "capitalize" }}>
-            {formatDate(meta?.date)}
+            {loading ? (
+              <Skeleton width={90} height={11} />
+            ) : (
+              formatDate(meta?.date)
+            )}
           </span>
         </div>
 
         <div style={timesRow}>
           {ORDER.map((k) => (
             <div key={k} style={column}>
-              <div style={label}>{shortLabel(labels[k])}</div>
+              <div style={label}>
+                {loading ? (
+                  <Skeleton width={28} height={9} center />
+                ) : (
+                  shortLabel(labels[k])
+                )}
+              </div>
               <div
                 style={{
                   ...time,
                   ...(k === current ? activeTime : {}),
                 }}
               >
-                {times[k]}
+                {loading ? (
+                  <Skeleton width={34} height={14} center />
+                ) : (
+                  times[k]
+                )}
               </div>
             </div>
           ))}
@@ -53,6 +77,36 @@ export default function Taqvim({ output }) {
     </div>
   );
 }
+
+/* Skeleton */
+
+function Skeleton({ width, height, center }) {
+  return (
+    <span
+      className="skeleton"
+      style={{
+        display: "inline-block",
+        width,
+        height,
+        borderRadius: 4,
+        verticalAlign: "middle",
+        margin: center ? "0 auto" : 0,
+      }}
+    />
+  );
+}
+
+const skeletonCSS = `
+  .skeleton {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 37%, #2a2a2a 63%);
+    background-size: 400% 100%;
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes skeleton-pulse {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+`;
 
 /* Helpers */
 
@@ -72,10 +126,11 @@ function activeKey(times, now) {
 }
 
 function shortLabel(t) {
-  return t.split(" ")[0];
+  return t ? t.split(" ")[0] : "";
 }
 
 function formatDate(iso) {
+  if (!iso) return "";
   return new Date(iso).toLocaleDateString("uz-UZ", {
     weekday: "long",
     day: "numeric",
