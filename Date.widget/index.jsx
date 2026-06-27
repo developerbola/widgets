@@ -1,7 +1,7 @@
 export const refreshFrequency = 23 * 60 * 60 * 1000;
 
-export const windowHeight = 80;
-export const windowWidth = 500;
+export const windowHeight = 70;
+export const windowWidth = 436;
 export const windowLeft = 500;
 export const windowTop = 145;
 
@@ -30,8 +30,8 @@ const DateWidget = () => {
 export default DateWidget;
 
 const screen = {
-  width: "100vw",
-  height: "100vh",
+  width: "100%",
+  height: "100%",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -43,5 +43,7 @@ const dayText = {
   color: "#ffffff",
   textAlign: "center",
   letterSpacing: "15px",
+  height: 55,
   textTransform: "uppercase",
+  transform: "translateX(13px) translateY(-14px)",
 };
