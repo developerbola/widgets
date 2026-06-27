@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-export const command = "";
 export const refreshFrequency = 1000;
 
 export const windowHeight = 80;

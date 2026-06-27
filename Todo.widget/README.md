@@ -24,3 +24,8 @@ All visual styling lives in the `className` export inside `index.jsx` as plain C
 
 - No shell `command` is used — this widget is pure UI state, so it has no `refreshFrequency`.
 - Only `react` and `lucide-react` are imported, per the widget environment's limited module set.
+
+
+## License
+
+MIT

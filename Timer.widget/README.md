@@ -18,3 +18,7 @@ Testing
 Notes
 - If you add persistent settings, consider storing them in localStorage or a small config file so preferences survive restarts.
 
+
+## License
+
+MIT

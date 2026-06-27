@@ -17,3 +17,8 @@ Customization
 
 Notes
 - Keep network/API keys (if any) out of version-controlled files — use environment variables or local config if you add private credentials.
+
+
+## License
+
+MIT

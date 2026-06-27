@@ -16,3 +16,8 @@ Customization
 
 Notes
 - If you change the API endpoint or response parsing, ensure `index.jsx` matches the response structure.
+
+
+## License
+
+MIT
