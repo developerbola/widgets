@@ -33,11 +33,7 @@ export default function Taqvim({ output }) {
       <div style={widget}>
         <div style={topRow}>
           <span>
-            {loading ? (
-              <Skeleton width={80} height={11} />
-            ) : (
-              meta?.region?.name
-            )}
+            {loading ? <Skeleton width={80} height={11} /> : meta?.region?.name}
           </span>
           <span style={{ textTransform: "capitalize" }}>
             {loading ? (
@@ -117,12 +113,25 @@ function toMin(t) {
 
 function activeKey(times, now) {
   if (!now) return null;
+
   const n = toMin(now);
-  let active = null;
-  for (const k of ORDER) {
-    if (toMin(times[k]) <= n) active = k;
+  const minutes = ORDER.map((k) => [k, toMin(times[k])]).filter(
+    ([, m]) => !Number.isNaN(m),
+  );
+
+  if (!minutes.length) return null;
+
+  for (let i = 0; i < minutes.length; i++) {
+    const [key, start] = minutes[i];
+    const [, nextStart] = minutes[(i + 1) % minutes.length];
+
+    const end = nextStart <= start ? nextStart + 1440 : nextStart;
+    const current = n < start ? n + 1440 : n;
+
+    if (current >= start && current < end) return key;
   }
-  return active;
+
+  return minutes[minutes.length - 1][0];
 }
 
 function shortLabel(t) {
