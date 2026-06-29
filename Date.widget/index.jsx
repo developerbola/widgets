@@ -2,7 +2,7 @@ export const refreshFrequency = 23 * 60 * 60 * 1000;
 
 export const windowHeight = 70;
 export const windowWidth = 436;
-export const windowLeft = 500;
+export const windowLeft = 517;
 export const windowTop = 145;
 
 const DateWidget = () => {

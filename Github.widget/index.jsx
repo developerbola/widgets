@@ -6,7 +6,7 @@ const githubToken = ""
 export const windowWidth = 399;
 export const windowHeight = 125;
 export const windowLeft = 10;
-export const windowTop = 35;
+export const windowTop = 20;
 
 export const refreshFrequency = 3600000;
 
