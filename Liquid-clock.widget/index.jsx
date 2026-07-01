@@ -5,13 +5,13 @@ export const refreshFrequency = 1000;
 
 const size = 170;
 
-export const windowWidth = size;
-export const windowHeight = size;
-export const windowTop = 135;
-export const windowLeft = 10;
+export const width = size;
+export const height = size;
+export const y = 135;
+export const x = 10;
 
 
-const center = windowHeight / 2;
+const center = height / 2;
 const smooth = true;
 
 const Clock = () => {

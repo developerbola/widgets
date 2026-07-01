@@ -421,7 +421,7 @@ const Chart = ({ data }) => {
     </div>
   );
 };
-export const windowTop = 555;
-export const windowLeft = 10;
-export const windowHeight = 80;
-export const windowWidth = 245;
+export const y = 555;
+export const x = 10;
+export const height = 80;
+export const width = 245;

@@ -299,7 +299,7 @@ const Currency = ({ output, error }) => {
 
 export default Currency;
 
-export const windowTop = 445;
-export const windowLeft = 10;
-export const windowHeight = 80;
-export const windowWidth = 230;
+export const y = 445;
+export const x = 10;
+export const height = 80;
+export const width = 230;

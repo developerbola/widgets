@@ -1,7 +1,7 @@
-export const windowWidth = 350;
-export const windowHeight = 80;
-export const windowTop = 40;
-export const windowLeft = 10;
+export const width = 350;
+export const height = 80;
+export const y = 40;
+export const x = 10;
 
 export const refreshFrequency = 1000 * 60 * 1;
 
@@ -155,8 +155,8 @@ const screen = {
 };
 
 const widget = {
-  width: windowWidth,
-  height: windowHeight,
+  width: width,
+  height: height,
   top: 100,
   left: 400,
   background: "#111",

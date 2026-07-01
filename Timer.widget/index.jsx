@@ -2,10 +2,10 @@ import { useState } from "react";
 
 export const refreshFrequency = 1000;
 
-export const windowHeight = 80;
-export const windowWidth = 160;
-export const windowLeft = 700;
-export const windowTop = 145;
+export const height = 80;
+export const width = 160;
+export const x = 700;
+export const y = 145;
 
 const width = 140;
 const height = 60;

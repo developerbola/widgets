@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 const githubUsername = "developerbola";
 const githubToken = ""
 
-export const windowWidth = 399;
-export const windowHeight = 125;
-export const windowLeft = 10;
-export const windowTop = 20;
+export const width = 399;
+export const height = 125;
+export const x = 10;
+export const y = 20;
 
 export const refreshFrequency = 3600000;
 
@@ -156,7 +156,7 @@ export default function GithubWidget() {
     return () => clearInterval(id);
   }, []);
 
-  const columns = Math.floor((windowWidth - 24) / 15);
+  const columns = Math.floor((width - 24) / 15);
 
   if (loading) {
     return (

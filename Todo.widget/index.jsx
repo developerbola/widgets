@@ -1,10 +1,10 @@
 import React from "react";
 import { Plus, Trash2, X } from "lucide-react";
 
-export const windowWidth = 300;
-export const windowHeight = 420;
-export const windowTop = 130;
-export const windowLeft = 10;
+export const width = 300;
+export const height = 420;
+export const y = 130;
+export const x = 10;
 
 const STORAGE_KEY = "todo.widget:tasks";
 
