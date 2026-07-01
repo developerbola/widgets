@@ -5,7 +5,7 @@ export const windowLeft = 10;
 
 export const refreshFrequency = 1000 * 60 * 1;
 
-export const command = "./taqvim.sh";
+export const command = `curl -s "https://namoz-vaqti.uz/?format=json&lang=lotin&period=today&region=kosonsoy"`;
 
 const ORDER = ["bomdod", "quyosh", "peshin", "asr", "shom", "xufton"];
 
@@ -74,8 +74,6 @@ export default function Taqvim({ output }) {
   );
 }
 
-/* Skeleton */
-
 function Skeleton({ width, height, center }) {
   return (
     <span
@@ -104,7 +102,6 @@ const skeletonCSS = `
   }
 `;
 
-/* Helpers */
 
 function toMin(t) {
   const [h, m] = t.split(":").map(Number);

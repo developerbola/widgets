@@ -7,6 +7,9 @@ const size = 170;
 
 export const windowWidth = size;
 export const windowHeight = size;
+export const windowTop = 135;
+export const windowLeft = 10;
+
 
 const center = windowHeight / 2;
 const smooth = true;
