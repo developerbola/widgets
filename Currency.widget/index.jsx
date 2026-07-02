@@ -81,6 +81,7 @@ const Currency = ({ output, error }) => {
       display: "flex",
       alignItems: "center",
       height: 50,
+      overflow: "hidden",
     },
     chartGrid: {
       display: "flex",
