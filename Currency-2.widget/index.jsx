@@ -86,6 +86,7 @@ const Currency = ({ output, error }) => {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      overflow: "hidden",
     },
     chartGrid: {
       display: "flex",
@@ -276,7 +277,7 @@ import { useState } from "react";
 const Chart = ({ data }) => {
   const width = 115;
   const height = 65;
-  const paddingX = 1;
+  const paddingX = 0;
   const paddingY = 10;
 
   const [hoverIndex, setHoverIndex] = useState(null);
