@@ -4,11 +4,11 @@ export const refreshFrequency = 1000;
 
 export const height = 80;
 export const width = 160;
-export const x = 700;
+export const x = 300;
 export const y = 145;
 
-const width = 140;
-const height = 60;
+const w = 140;
+const h = 60;
 const r = 6;
 const stroke = 3;
 
@@ -68,7 +68,7 @@ const Timer = ({ run }) => {
   };
 
   const perimeter =
-    2 * (width - stroke) + 2 * (height - stroke) - 8 * r + 2 * Math.PI * r;
+    2 * (w - stroke) + 2 * (h - stroke) - 8 * r + 2 * Math.PI * r;
 
   const progress = 1 - state.remaining / TOTAL_SECONDS;
   const dashOffset = perimeter * progress;
@@ -86,12 +86,12 @@ const Timer = ({ run }) => {
   return (
     <div id="pomodoro">
       <div className="timer" onClick={startStop} onDoubleClick={reset}>
-        <svg width={width} height={height}>
+        <svg width={w} height={h}>
           <rect
             x={stroke / 2}
             y={stroke / 2}
-            width={width - stroke}
-            height={height - stroke}
+            width={w - stroke}
+            height={h - stroke}
             rx={r}
             fill="transparent"
             stroke={state.running ? getColor() : "#ffffff14"}
@@ -128,8 +128,8 @@ export const className = `
 }
 
 .timer {
-  width: ${width}px;
-  height: ${height}px;
+  width: ${w}px;
+  height: ${h}px;
   position: relative;
   cursor: pointer;
   user-select: none;
