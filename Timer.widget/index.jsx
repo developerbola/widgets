@@ -2,15 +2,20 @@ import { useState } from "react";
 
 export const refreshFrequency = 1000;
 
-export const height = 80;
-export const width = 160;
+export const height = 60; 
+
+const BASE_HEIGHT = 80;
+const scale = height / BASE_HEIGHT;
+
+export const width = 160 * scale;
 export const x = 300;
 export const y = 145;
 
-const w = 140;
-const h = 60;
-const r = 6;
-const stroke = 3;
+const w = 140 * scale;
+const h = 60 * scale;
+const r = 6 * scale;
+const stroke = 3 * scale;
+const fontSize = 25 * scale;
 
 const POMODORO_MINUTES = 25;
 const TOTAL_SECONDS = POMODORO_MINUTES * 60;
@@ -59,7 +64,6 @@ const Timer = ({ run }) => {
       return;
     }
 
-    // resume-aware start
     state.running = true;
     state.startTime = Date.now() - (TOTAL_SECONDS - state.remaining) * 1000;
 
@@ -67,6 +71,7 @@ const Timer = ({ run }) => {
     state.interval = setInterval(tick, 1000);
   };
 
+  // Perimeter math works perfectly now that components scale together
   const perimeter =
     2 * (w - stroke) + 2 * (h - stroke) - 8 * r + 2 * Math.PI * r;
 
@@ -146,10 +151,10 @@ export const className = `
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 25px;
+  font-size: ${fontSize}px;
   letter-spacing: 1px;
   transition: opacity 0.2s ease;
-   -webkit-user-select: none;
+  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none !important;
