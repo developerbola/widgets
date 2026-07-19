@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import bg from "./bg.png";
 
 export const refreshFrequency = 1000;
-
 const size = 170;
 
 export const width = size;
@@ -79,7 +78,7 @@ const Clock = () => {
 
   return (
     <div style={{ position: "relative", width: size, height: size }}>
-      <img src={bg} height={size} width={size} />
+      <img src={bg} height={size} width={size} draggable={false} />
 
       <HandWithPill height={40} deg={hourDeg} pillHeight={20} />
       <HandWithPill height={55} deg={minuteDeg} pillHeight={30} />
