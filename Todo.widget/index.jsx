@@ -1,7 +1,7 @@
 import React from "react";
-import { Plus, Trash2, X } from "lucide-react";
+import { Plus, Trash2, X, GripVertical } from "lucide-react";
 
-export const width = 300;
+export const width = 350;
 export const height = 420;
 export const y = 130;
 export const x = 10;
@@ -28,8 +28,11 @@ export default function TodoWidget() {
   const [value, setValue] = React.useState("");
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [focusId, setFocusId] = React.useState(null);
+  const [draggingId, setDraggingId] = React.useState(null);
   const inputRef = React.useRef(null);
   const itemRefs = React.useRef({});
+  const listRef = React.useRef(null);
+  const dragInfo = React.useRef({ id: null, lastOverId: null });
 
   React.useEffect(() => {
     saveTasks(tasks);
@@ -103,6 +106,19 @@ export default function TodoWidget() {
     });
   };
 
+  const reorderTasks = (sourceId, targetId) => {
+    if (sourceId === targetId) return;
+    setTasks((prev) => {
+      const sourceIndex = prev.findIndex((t) => t.id === sourceId);
+      const targetIndex = prev.findIndex((t) => t.id === targetId);
+      if (sourceIndex === -1 || targetIndex === -1) return prev;
+      const next = [...prev];
+      const [moved] = next.splice(sourceIndex, 1);
+      next.splice(targetIndex, 0, moved);
+      return next;
+    });
+  };
+
   const handleItemKeyDown = (e, id) => {
     const currentIndex = tasks.findIndex((t) => t.id === id);
 
@@ -149,6 +165,60 @@ export default function TodoWidget() {
     }
   };
 
+  const handlePointerMove = React.useCallback((e) => {
+    const id = dragInfo.current.id;
+    if (!id) return;
+
+    const container = listRef.current;
+    if (!container) return;
+
+    // auto-scroll near edges
+    const bounds = container.getBoundingClientRect();
+    const edge = 24;
+    if (e.clientY < bounds.top + edge) {
+      container.scrollTop -= 8;
+    } else if (e.clientY > bounds.bottom - edge) {
+      container.scrollTop += 8;
+    }
+
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    const itemEl = el ? el.closest(".todo-item") : null;
+    if (!itemEl) return;
+
+    const overId = itemEl.getAttribute("data-id");
+    if (!overId || overId === id || overId === dragInfo.current.lastOverId)
+      return;
+
+    dragInfo.current.lastOverId = overId;
+    reorderTasks(id, overId);
+  }, []);
+
+  const handlePointerUp = React.useCallback(() => {
+    dragInfo.current.id = null;
+    dragInfo.current.lastOverId = null;
+    setDraggingId(null);
+    window.removeEventListener("pointermove", handlePointerMove);
+    window.removeEventListener("pointerup", handlePointerUp);
+  }, [handlePointerMove]);
+
+  const handlePointerDown = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dragInfo.current.id = id;
+    dragInfo.current.lastOverId = id;
+    setDraggingId(id);
+    setFocusId(id);
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+  };
+
+  React.useEffect(() => {
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, [handlePointerMove, handlePointerUp]);
+
   return (
     <div className="todo-widget" onKeyDown={handleWidgetKeyDown}>
       <div className="todo-header">
@@ -168,11 +238,14 @@ export default function TodoWidget() {
         <div className="todo-empty">No tasks yet</div>
       ) : (
         <>
-          <div className="todo-list">
+          <div className="todo-list" ref={listRef}>
             {tasks.map((t) => (
               <div
-                className="todo-item"
+                className={
+                  "todo-item" + (draggingId === t.id ? " dragging" : "")
+                }
                 key={t.id}
+                data-id={t.id}
                 tabIndex={0}
                 role="checkbox"
                 aria-checked={t.done}
@@ -195,7 +268,7 @@ export default function TodoWidget() {
                       style={{
                         height: "74%",
                         width: "74%",
-                        background: "#007aff",
+                        background: "#217efe",
                         borderRadius: 3,
                       }}
                     />
@@ -213,6 +286,13 @@ export default function TodoWidget() {
                 >
                   <Trash2 size={13} />
                 </button>
+                <div
+                  className="todo-drag-handle"
+                  aria-label="Drag to reorder"
+                  onPointerDown={(e) => handlePointerDown(e, t.id)}
+                >
+                  <GripVertical size={14} />
+                </div>
               </div>
             ))}
           </div>
@@ -264,7 +344,6 @@ export default function TodoWidget() {
 }
 
 export const className = `
-  /* (CSS stays completely identical to your original styles) */
   * {
     box-sizing: border-box;
     user-select: none;
@@ -282,9 +361,8 @@ export const className = `
     display: flex;
     flex-direction: column;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
-    background: #111;
+    background: #111111;
     border-radius: 8px;
-    border: 1px solid #ffffff14;
     color: #f2f2f4;
     overflow: hidden;
   }
@@ -313,8 +391,8 @@ export const className = `
   .todo-count {
     font-size: 11px;
     font-weight: 500;
-    color: #ffffff66;
-    background: #ffffff0f;
+    color: #f2f2f470;
+    background: #232323;
     padding: 2px 8px;
     border-radius: 999px;
   }
@@ -357,15 +435,40 @@ export const className = `
   .todo-item {
     display: flex;
     align-items: start;
-    gap: 10px;
+    gap: 6px;
     padding: 5px;
     border-radius: 8px;
-    transition: background 0.12s ease, box-shadow 0.12s ease;
+    transition: background 0.12s ease, opacity 0.12s ease;
     outline: none;
   }
 
   .todo-item:hover {
-    background: #ffffff0b;
+    background: #232323;
+  }
+
+  .todo-item.dragging {
+    opacity: 0.5;
+    background: #232323;
+  }
+
+  .todo-drag-handle {
+    flex-shrink: 0;
+    width: 16px;
+    height: 18px;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f2f2f450;
+    touch-action: none;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+  }
+
+  .todo-item:hover .todo-drag-handle,
+  .todo-item:focus .todo-drag-handle,
+  .todo-item.dragging .todo-drag-handle {
+    opacity: 1;
   }
 
   .todo-checkbox {
@@ -373,7 +476,7 @@ export const className = `
     width: 18px;
     height: 18px;
     border-radius: 6px;
-    border: 2px solid #007aff;
+    border: 2px solid #217efe;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -401,21 +504,16 @@ export const className = `
     justify-content: center;
     border: none;
     background: transparent;
-    color: #ffffff40;
+    color: #ff8a8a;
+    background: #ff64641a;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.12s ease, color 0.12s ease;
     border-radius: 6px;
   }
 
-  .todo-item:hover .todo-delete,
-  .todo-item:focus .todo-delete {
+  .todo-item:hover .todo-delete {
     opacity: 1;
-  }
-
-  .todo-delete:hover {
-    color: #ff8a8a;
-    background: rgba(255, 100, 100, 0.1);
   }
 
   .todo-empty {
@@ -424,7 +522,7 @@ export const className = `
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.28);
+    color: #232323;
     padding: 30px 20px;
     text-align: center;
   }
@@ -432,7 +530,7 @@ export const className = `
   .todo-dialog-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: #111;
     backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
@@ -444,7 +542,7 @@ export const className = `
 
   .todo-dialog {
     width: 100%;
-    background: #111;
+    background: #1;
     backdrop-filter: blur(20px);
     border-radius: 8px;
     padding: 14px;
@@ -472,14 +570,14 @@ export const className = `
     height: 20px;
     border: none;
     background: transparent;
-    color: #ffffff55;
+    color: #232323;
     cursor: pointer;
     border-radius: 6px;
     transition: background 0.12s ease, color 0.12s ease;
   }
 
   .todo-dialog-close:hover {
-    background: #ffffff14;
+    background: #232323;
     color: #f2f2f4;
   }
 
@@ -491,7 +589,7 @@ export const className = `
 
   .todo-input {
     flex: 1;
-    background: #ffffff0d;
+    background: #232323;
     outline: none;
     color: #f2f2f4;
     font-size: 13px;
@@ -502,7 +600,7 @@ export const className = `
   }
 
   .todo-input::placeholder {
-    color: #ffffff52;
+    color: #232323;
   }
 
   .todo-dialog-add-btn {
