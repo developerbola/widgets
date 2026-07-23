@@ -1,4 +1,5 @@
 const { useState, useMemo } = React;
+import { Loader2 } from "lucide-react";
 
 function parseReminders(output) {
   if (!output) return [];
@@ -58,6 +59,7 @@ function formatDue(due) {
 }
 
 const RemindersWidget = ({ output, error, run }) => {
+
   const [manualOutput, setManualOutput] = useState(null);
 
   const reminders = useMemo(
@@ -65,17 +67,31 @@ const RemindersWidget = ({ output, error, run }) => {
     [output, manualOutput],
   );
 
-  const isLoading = !error && manualOutput === null && output === undefined;
+  const isLoading =
+    !error && manualOutput === null && (output === undefined || output === null || output === "");
 
   if (isLoading) {
     return (
       <div className="reminders-widget reminders-loading">
-        <div className="reminders-spinner" />
+        <Loader2 className="reminders-spinner-icon" size={22} strokeWidth={2} />
       </div>
     );
   }
 
   if (error && !manualOutput) {
+    return (
+      <div className="reminders-widget reminders-error">
+        Couldn't read Reminders. Check Automation permissions.
+      </div>
+    );
+  }
+
+  const hasOutputError =
+    !manualOutput &&
+    typeof output === "string" &&
+    /access denied|timeout|error/i.test(output);
+
+  if (hasOutputError) {
     return (
       <div className="reminders-widget reminders-error">
         Couldn't read Reminders. Check Automation permissions.
@@ -116,56 +132,21 @@ const RemindersWidget = ({ output, error, run }) => {
   );
 };
 
-const REMINDERS_COMMAND = `osascript -e '
-tell application "Reminders"
-    set output to ""
-    repeat with aList in every list
-        repeat with aRem in (every reminder of aList whose completed is false)
-            set rName to name of aRem
-
-            try
-                set rDue to (due date of aRem) as string
-                if rDue is "missing value" then set rDue to "No due date"
-            on error
-                set rDue to "No due date"
-            end try
-
-            try
-                set rNotes to body of aRem
-                if rNotes is "missing value" or rNotes is "" then set rNotes to "None"
-            on error
-                set rNotes to "None"
-            end try
-
-            try
-                set rPriority to priority of aRem
-                if rPriority is 1 then set rPriority to "High"
-                if rPriority is 5 then set rPriority to "Medium"
-                if rPriority is 9 then set rPriority to "Low"
-                if rPriority is 0 then set rPriority to "None"
-            on error
-                set rPriority to "None"
-            end try
-
-            set output to output & "📋 LIST: " & name of aList & "\\n" & "   📌 Task:     " & rName & "\\n" & "   📅 Due:      " & rDue & "\\n" & "   ⚠️ Priority: " & rPriority & "\\n" & "   📝 Notes:    " & rNotes & "\\n\\n"
-        end repeat
-    end repeat
-    return output
-end tell'
-`;
-
 export default RemindersWidget;
-export const command = REMINDERS_COMMAND;
+export const command = "osascript -l JavaScript ./remind.js 2>&1";
 export const refreshFrequency = 60000;
 export const width = 350;
-export const height = 460;
+export const height = 200;
+export const x = 10;
+export const y = 410;
 
 export const className = `
 .reminders-widget {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
   background: transparent;
   color: #e5e5e5;
-  height: 100%;
+  height: 200px;
+  width: 350px;
   box-sizing: border-box;
   padding: 20px 16px;
   overflow-y: auto;
@@ -200,13 +181,9 @@ export const className = `
   justify-content: center;
 }
 
-.reminders-spinner {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid #ffffff33;
-  border-top-color: #ffffffd9;
-  animation: reminders-spin 0.7s linear infinite;
+.reminders-spinner-icon {
+  color: #ffffffd9;
+  animation: reminders-spin 0.9s linear infinite;
 }
 
 @keyframes reminders-spin {

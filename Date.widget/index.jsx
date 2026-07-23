@@ -1,8 +1,8 @@
 export const refreshFrequency = 23 * 60 * 60 * 1000;
 
 export const height = 70;
-export const width = 436;
-export const x = 517;
+export const width = 536;
+export const x = 467;
 export const y = 145;
 
 const DateWidget = () => {
@@ -45,5 +45,5 @@ const dayText = {
   letterSpacing: "15px",
   height: 55,
   textTransform: "uppercase",
-  transform: "translateX(13px) translateY(-14px)",
+  transform: "translateX(11px) translateY(-14px)",
 };
