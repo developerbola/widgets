@@ -1,4 +1,4 @@
-CACHE="/tmp/usd_rates.cache"
+CACHE="./usd_rates.cache"
 CACHE_TTL=$((60 * 60 * 6)) # 6 hours
 
 NOW=$(date +%s)
@@ -31,7 +31,7 @@ for i in {1..10}; do
     else
         PREV_DATE=$(date -d "$TODAY - $i days" +%Y-%m-%d 2>/dev/null)
     fi
-    
+
     if [ -z "$PREV_DATE" ]; then
         echo "Error: Failed to calculate date for $i days ago." >&2
         exit 1
@@ -44,16 +44,20 @@ RATES=()
 DIFFS=()
 ACTUAL_DATES=()
 
+MAX_LOOKBACK=20 # hard cap on how far back we'll walk looking for a unique rate
+
 # Fetch data for each date
 for DATE in "${DATES[@]}"; do
     MAX_RETRIES=3
     RETRY_COUNT=0
-    
+    LOOKBACK=0
+    FOUND="0"
+
     while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
         URL="https://cbu.uz/uz/arkhiv-kursov-valyut/json/USD/$DATE/"
-        
+
         RESPONSE=$(curl -s --connect-timeout 10 --max-time 30 "$URL" 2>/dev/null)
-        
+
         if [ -z "$RESPONSE" ]; then
             RETRY_COUNT=$((RETRY_COUNT + 1))
             if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
@@ -66,16 +70,25 @@ for DATE in "${DATES[@]}"; do
             ACTUAL_DATES+=("$DATE")
             break
         fi
-        
-        RATE=$(echo "$RESPONSE" | grep -o '"Rate":"[0-9.]*"' | sed 's/"Rate":"\(.*\)"/\1/')
-        
+
+        RATE=$(echo "$RESPONSE" | grep -o '"Rate":"[0-9.]*"' | sed 's/"Rate":"\([^"]*\)".*/\1/')
+
         if [ -z "$RATE" ]; then
+            LOOKBACK=$((LOOKBACK + 1))
+            if [ $LOOKBACK -ge $MAX_LOOKBACK ]; then
+                echo "Warning: No rate found for $DATE after $MAX_LOOKBACK lookback attempts" >&2
+                RATES+=("N/A")
+                DIFFS+=("N/A")
+                ACTUAL_DATES+=("$DATE")
+                break
+            fi
+
             if [[ "$OSTYPE" == "darwin"* ]]; then
                 DATE=$(date -v-1d -j -f "%Y-%m-%d" "$DATE" +%Y-%m-%d 2>/dev/null)
             else
                 DATE=$(date -d "$DATE - 1 day" +%Y-%m-%d 2>/dev/null)
             fi
-            
+
             if [ -z "$DATE" ]; then
                 RATES+=("N/A")
                 DIFFS+=("N/A")
@@ -84,14 +97,23 @@ for DATE in "${DATES[@]}"; do
             fi
             continue
         fi
-        
+
         if [[ " ${RATES[@]} " =~ " $RATE " ]]; then
+            LOOKBACK=$((LOOKBACK + 1))
+            if [ $LOOKBACK -ge $MAX_LOOKBACK ]; then
+                echo "Warning: Could not find unique rate for $DATE after $MAX_LOOKBACK lookback attempts" >&2
+                RATES+=("N/A")
+                DIFFS+=("N/A")
+                ACTUAL_DATES+=("$DATE")
+                break
+            fi
+
             if [[ "$OSTYPE" == "darwin"* ]]; then
                 DATE=$(date -v-1d -j -f "%Y-%m-%d" "$DATE" +%Y-%m-%d 2>/dev/null)
             else
                 DATE=$(date -d "$DATE - 1 day" +%Y-%m-%d 2>/dev/null)
             fi
-            
+
             if [ -z "$DATE" ]; then
                 RATES+=("N/A")
                 DIFFS+=("N/A")
@@ -100,16 +122,22 @@ for DATE in "${DATES[@]}"; do
             fi
             continue
         fi
-        
-        DIFF=$(echo "$RESPONSE" | grep -o '"Diff":"[-0-9.]*"' | sed 's/"Diff":"\(.*\)"/\1/')
+
+        DIFF=$(echo "$RESPONSE" | grep -o '"Diff":"[-0-9.]*"' | sed 's/"Diff":"\([^"]*\)".*/\1/')
         [ -z "$DIFF" ] && DIFF="0"
-        
-        API_DATE=$(echo "$RESPONSE" | grep -o '"Date":"[0-9-]*"' | sed 's/"Date":"\(.*\)"/\1/')
-        [ -z "$API_DATE" ] && API_DATE="$DATE"
-        
+
+        # API returns Date as DD.MM.YYYY, e.g. "24.07.2026"
+        API_DATE_RAW=$(echo "$RESPONSE" | grep -o '"Date":"[0-9.]*"' | sed 's/"Date":"\([^"]*\)".*/\1/')
+        if [ -n "$API_DATE_RAW" ]; then
+            API_DATE=$(echo "$API_DATE_RAW" | awk -F'.' '{printf "%s-%s-%s", $3, $2, $1}')
+        else
+            API_DATE="$DATE"
+        fi
+
         RATES+=("$RATE")
         DIFFS+=("$DIFF")
         ACTUAL_DATES+=("$API_DATE")
+        FOUND="1"
         break
     done
 done
@@ -120,9 +148,9 @@ for i in {0..10}; do
     DATE=${ACTUAL_DATES[$i]:-""}
     RATE=${RATES[$i]:-"N/A"}
     DIFF=${DIFFS[$i]:-"N/A"}
-    
+
     [ -z "$DATE" ] && DATE="unknown"
-    
+
     TRIPLET="$DATE:$RATE:$DIFF"
     if [ -z "$CURRENCY_DATA" ]; then
         CURRENCY_DATA="$TRIPLET"

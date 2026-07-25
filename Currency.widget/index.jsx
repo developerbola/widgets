@@ -1,4 +1,4 @@
-export const command = "./rates.sh";
+export const command = `./rates.sh`;
 export const refreshFrequency = 60 * 1000 * 60 * 24;
 
 const Currency = ({ output, error }) => {
@@ -144,7 +144,9 @@ const Currency = ({ output, error }) => {
         `}</style>
         <div style={styles.loadingContainer}>
           <div style={styles.spinner}>
-            <div style={styles.spinnerRing("0s", "#ffffff30")}></div>
+            <div style={styles.spinnerRing("0s", "#ffffff")} />
+            <div style={styles.spinnerRing("0.35s", "#ffffff")} />
+            <div style={styles.spinnerRing("0.5s", "#ffffff")} />
           </div>
           {error && <p style={styles.errorText}>{error}</p>}
         </div>

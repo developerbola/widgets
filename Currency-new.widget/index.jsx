@@ -1,4 +1,4 @@
-export const command = "./rates.sh";
+export const command = `./rates.sh`;
 export const refreshFrequency = 60 * 1000 * 60 * 24;
 
 const Currency = ({ output, error }) => {
@@ -124,6 +124,7 @@ const Currency = ({ output, error }) => {
       height: "100%",
       border: "2px solid transparent",
       borderTopColor: color,
+      borderLeftolor: color,
       borderRadius: "50%",
       animation: `spin 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite`,
       animationDelay: delay,
@@ -150,7 +151,9 @@ const Currency = ({ output, error }) => {
         `}</style>
         <div style={styles.loadingContainer}>
           <div style={styles.spinner}>
-            <div style={styles.spinnerRing("0s", "#ffffff30")}></div>
+            <div style={styles.spinnerRing("0s", "#ffffff")} />
+            <div style={styles.spinnerRing("0.35s", "#ffffff")} />
+            <div style={styles.spinnerRing("0.65s", "#ffffff")} />
           </div>
           {error && <p style={styles.errorText}>{error}</p>}
         </div>
@@ -350,8 +353,6 @@ const Chart = ({ data }) => {
 
   const hovered = hoverIndex !== null ? points[hoverIndex] : null;
 
-  // tooltip flips to the left side of the dot if there's not enough
-  // room on the right, so it never spills outside the chart
   const tooltipWidth = 58;
   const tooltipOnLeft = hovered && hovered.x > width - tooltipWidth - 4;
 
@@ -411,7 +412,7 @@ const Chart = ({ data }) => {
             fontSize: 8,
             lineHeight: 1.3,
             pointerEvents: "none",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.45)",
+            boxShadow: "0 2px 8px #00000073",
             zIndex: 10,
           }}
         >

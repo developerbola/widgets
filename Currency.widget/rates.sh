@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CACHE="/tmp/usd_rates.cache"
+CACHE="./usd_rates.cache"
 CACHE_TTL=$((60 * 60 * 6)) # 6 hours
 
 NOW=$(date +%s)
