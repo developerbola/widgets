@@ -1,7 +1,7 @@
 # Currency New Widget
 
 Description
-- Displays real-time USD/UZS exchange rates fetched from the Central Bank of Uzbekistan API. Features a clean, minimal UI showing the current rate, daily percentage change, and an interactive 11-day trend chart with hover tooltips. Data is cached for 6 hours to reduce API calls.
+- Displays real-time USD/UZS exchange rates fetched from the Central Bank of Uzbekistan API. Features a clean, minimal UI showing the current rate, daily percentage change, and an interactive 11-day trend chart with hover tooltips. Data is cached for 6 hours to reduce API calls, cashe will be stored inside widget folder with `usd-rates.cache` name.
 
 Permission
 - Run `chmod +x ~/{your-widget-path}/Currency 2.widget/rates.sh` to make the shell script executable.

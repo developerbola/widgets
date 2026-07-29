@@ -3,6 +3,7 @@
 Description
 
 - Battery chart widget that displays your battery level over time with a smooth SVG chart.
+- Battery history file will be stored this widget folder's inside with `appinapp-battery-history.csv` name
 
 ## Features
 
