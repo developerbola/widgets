@@ -1,6 +1,6 @@
 # GitHub Widget
 
-A GitHub contribution heatmap widget for Übersicht.
+A GitHub contribution heatmap widget for Appinapp.
 
 Description
 - Fetches your GitHub contribution calendar via the GraphQL API and renders it as a color-coded grid, similar to the profile contribution graph.
@@ -11,7 +11,7 @@ How it works
 Customization
 - Username: change the `githubUsername` constant at the top of `index.jsx`.
 - Token: set a personal access token in `githubToken` for private profile data.
-- Grid size: adjust `windowWidth` and `windowHeight`, or change the `columns` calculation.
+- Grid size: adjust `width` and `height`, or change the `columns` calculation.
 - Colors: edit the `getColor` function to customize the commit-count-to-color mapping.
 - Refresh interval: change `refreshFrequency` (default: 1 hour).
 - Metadata: update `widget.json` to change the widget name, description, or author.

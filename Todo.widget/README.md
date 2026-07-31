@@ -15,8 +15,8 @@ A minimalistic, modern to-do list for your desktop. Glassy dark card, quick-add 
 All visual styling lives in the `className` export inside `index.jsx` as plain CSS — no build step needed.
 
 - **Accent color**: change the blue gradient in `.todo-checkbox.done` and `.todo-add-btn` (`#7aa2ff` / `#5b7fff`) to your own colors.
-- **Size**: adjust `windowWidth` / `windowHeight` near the top of `index.jsx`.
-- **Position on screen**: adjust `windowTop` / `windowLeft`.
+- **Size**: adjust `width` / `height` near the top of `index.jsx`.
+- **Position on screen**: adjust `y` / `x`.
 - **Blur / transparency**: tweak `backdrop-filter` and the `rgba(...)` background value on `.todo-widget`.
 - **Font**: edit the `font-family` in `.todo-widget`.
 

@@ -9,12 +9,12 @@ How it works
 Customization
 - Font: replace `font.otf` with your own font file and update the base64 data URI in `index.jsx` (or use the file path directly).
 - Text size and spacing: edit `fontSize` and `letterSpacing` in the `dayText` style object.
-- Position on screen: adjust `windowTop`, `windowLeft`, `windowWidth`, or `windowHeight` at the top of `index.jsx`.
+- Position on screen: adjust `y`, `x`, `width`, or `height` at the top of `index.jsx`.
 - Refresh interval: change `refreshFrequency` to update more or less often than once per day.
 - Metadata: update `widget.json` to change the widget name, description, or author.
 
 Notes
-- The Anurati font is embedded as base64 in the CSS to avoid file-path resolution issues inside the Übersicht webview.
+- The Anurati font is embedded as base64 in the CSS to avoid file-path resolution issues inside the Appinapp webview.
 - To use a different font, convert it to base64 (`base64 -i font.otf`) and replace the data URI in the `@font-face` `src`.
 
 
