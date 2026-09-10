@@ -17,7 +17,7 @@ A macOS desktop widget that displays real-time battery levels for your AirPods.
 
 ## Usage
 
-Place the widget in your Übersicht widgets directory. The widget automatically reads Bluetooth data via `system_profiler SPBluetoothDataType`.
+Place the widget in your Appinapp widgets directory. The widget automatically reads Bluetooth data via `system_profiler SPBluetoothDataType`.
 
 ## Dimensions
 
