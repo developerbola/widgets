@@ -19,12 +19,12 @@ Install this widget in your widget framework (e.g. [Übersicht](https://github.c
 
 ## Details
 
-| Property | Value |
-|----------|-------|
-| Width | 150 |
-| Height | 180 |
-| Font | Inter / SF Pro Display |
+| Property | Value                  |
+| -------- | ---------------------- |
+| Width    | 150                    |
+| Height   | 180                    |
+| Font     | Inter / SF Pro Display |
 
-## Author
+## License
 
-Mutawirr — [developerbola@icloud.com](mailto:developerbola@icloud.com)
+MIT
