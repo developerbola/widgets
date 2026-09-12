@@ -9,13 +9,10 @@ A sleek horizontal clock widget featuring smooth animated seconds transitions wi
 - **Depth blur layers** — Multi-layer backdrop blur with gradient masks creates a natural depth-of-field effect on the seconds row
 - **Tabular numerals** — Fixed-width digits prevent layout shift
 
-## Preview
-
-![screenshot](screenshot.png)
 
 ## Usage
 
-Install this widget in your widget framework (e.g. [Übersicht](https://github.com/felixhagework/uebersicht)) and it will display the current time with animated seconds.
+Install this widget in your widget folder and it will display the current time with animated seconds.
 
 ## Details
 
