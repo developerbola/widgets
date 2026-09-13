@@ -14,7 +14,7 @@ Customization
 - Grid size: adjust `width` and `height`, or change the `columns` calculation.
 - Colors: edit the `getColor` function to customize the commit-count-to-color mapping.
 - Refresh interval: change `refreshFrequency` (default: 1 hour).
-- Metadata: update `widget.json` to change the widget name, description, or author.
+- Metadata: update `widget.json` to change the widget name, description.
 
 ## License
 

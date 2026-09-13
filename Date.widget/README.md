@@ -11,7 +11,7 @@ Customization
 - Text size and spacing: edit `fontSize` and `letterSpacing` in the `dayText` style object.
 - Position on screen: adjust `y`, `x`, `width`, or `height` at the top of `index.jsx`.
 - Refresh interval: change `refreshFrequency` to update more or less often than once per day.
-- Metadata: update `widget.json` to change the widget name, description, or author.
+- Metadata: update `widget.json` to change the widget name, description.
 
 Notes
 - The Anurati font is embedded as base64 in the CSS to avoid file-path resolution issues inside the Appinapp webview.

@@ -17,7 +17,7 @@ Customization
 - Window position: adjust `y`, `x`, `height`, or `width`.
 - Smooth animation: set `smooth = false` to switch to a discrete 1-second tick.
 - Hand styles: edit the `HandWithPill` component props (width, height, pillHeight) for different hand shapes.
-- Metadata: update `widget.json` to change the widget name, description, or author.
+- Metadata: update `widget.json` to change the widget name, description.
 
 ## License
 

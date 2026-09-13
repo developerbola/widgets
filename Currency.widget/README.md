@@ -17,7 +17,7 @@ Customization
 - Change which currencies are fetched: edit `rates.sh` to modify the currency pairs or the API endpoint used.
 - Adjust refresh or scheduling: if a refresh interval is defined in `widget.json` or implemented inside the script, change that value there or inside `rates.sh`.
 - Modify appearance and layout: edit `index.jsx` to change text, layout, formatting, or styling.
-- Metadata: update `widget.json` to change the widget name, description, or author information.
+- Metadata: update `widget.json` to change the widget name, description information.
 
 Notes
 

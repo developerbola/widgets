@@ -18,7 +18,7 @@
 - Change language: edit the `lang=lotin` parameter (e.g., use `kirill` for Cyrillic)
 - Change refresh interval: update `refreshFrequency` (default: 60000ms / 1 minute)
 - Layout and labels: edit `index.jsx` to change ordering, labels, fonts, or time formatting
-- Metadata: update `widget.json` to change the widget name, description, or author
+- Metadata: update `widget.json` to change the widget name, description
 
 ## License
 

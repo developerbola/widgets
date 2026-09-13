@@ -14,7 +14,7 @@ Customization
 - Adjust cache duration: edit the `CACHE_TTL` variable in `rates.sh` (currently 6 hours).
 - Modify appearance: edit `index.jsx` to change colors, fonts, layout, or chart styling.
 - Change data source: update the API URL in `rates.sh` if you want to fetch different currency pairs.
-- Metadata: update `widget.json` to change the widget name, description, or author information.
+- Metadata: update `widget.json` to change the widget name, description information.
 
 Notes
 - The widget fetches data from the Central Bank of Uzbekistan's public API (no API key required).
